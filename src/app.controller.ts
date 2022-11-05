@@ -23,8 +23,8 @@ export class AppController {
       meta: {
         description: "Test nest app",
         title: "Page - Index",
-        keywords: "uznu edu",
-        author: "uznu",
+        keywords: "uzhnu edu",
+        author: "uzhnu",
       },
       message: 'Template test!',
       posts

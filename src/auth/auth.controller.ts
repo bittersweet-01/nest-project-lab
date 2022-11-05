@@ -24,11 +24,11 @@ export class AuthController {
 
     @Get('google')
     @UseGuards(GoogleOauthGuard)
-    async googleAuth(@Req() req) {}
+    async googleLogin(@Req() req) {}
 
     @Get('google/redirect')
     @UseGuards(GoogleOauthGuard)
-    async googleAuthRedirect(@Req() req) {
+    async googleLoginRedirect(@Req() req) {
         return this.authService.googleLogin(req)
     }
 
@@ -41,7 +41,7 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    async login(@Body() loginDto: LoginUserDto) {
+    async login(@Body() loginDto: LoginUserDto) {        
         return this.authService.login(loginDto);
     }
 

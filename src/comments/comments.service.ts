@@ -15,7 +15,7 @@ export class CommentsService {
         private readonly postsRepository: Repository<Posts>,
       ) { }
     
-    getAll(postId: number) {
+      async getAll(postId: number) {
         const comments =  this.commentsRepository.find({
             where : {
                 post: { id: postId }

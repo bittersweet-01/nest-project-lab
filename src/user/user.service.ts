@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { CreateUserDto } from './dto/user.create.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
+import { CreateGoogleUserDto } from './dto/user.createWithGoogle.dto';
 
 @Injectable()
 export class UserService {
@@ -13,12 +14,13 @@ export class UserService {
         private userRepository: Repository<User>) {
     }
 
-    async create(createDTO: CreateUserDto) {
+    async create(createDTO: CreateUserDto|CreateGoogleUserDto ) {
 
-        if (createDTO.password !== createDTO.confirmPassword) {
-            throw new BadRequestException("Confirm password not match")
+        if (createDTO instanceof CreateUserDto) {
+            if (createDTO.password !== createDTO.confirmPassword) {
+                throw new BadRequestException("Confirm password not match")
+            }
         }
-
 
         const user = await this.userRepository.find({
             where: [
@@ -47,10 +49,9 @@ export class UserService {
         const hashedPassword = await bcrypt.hash(createDTO.password, 10);
 
         const newUser = this.userRepository.create({
-            email: createDTO.email,
+            ...createDTO,
             password: hashedPassword,
-            username: createDTO.username,
-        })
+        });
 
         const savedUser = await this.userRepository.save(newUser)
         delete savedUser.password
@@ -68,5 +69,9 @@ export class UserService {
                 { username: emailOrUserName }
             ]
         })
+    }
+    
+    async delete(id: number) {
+        await this.userRepository.delete({ id: id });
     }
 }

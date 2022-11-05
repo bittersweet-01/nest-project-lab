@@ -13,7 +13,9 @@ import {
   // Header,
   // Redirect,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 // import { Request as IRequest, Response as IResponse } from 'express';
@@ -25,6 +27,7 @@ export class PostsController {
 
   // for Admin
   @Get("/admin")
+  @UseGuards(JwtAuthGuard)
   findNotApprovedAdmin(
     @Query('q', new DefaultValuePipe("")) q: string,
     @Query('page', new DefaultValuePipe(0), new ParseIntPipe()) page: number,
@@ -62,12 +65,14 @@ export class PostsController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   create(@Body() body: CreatePostDto) {
     return this.postsService.create(body);
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.ACCEPTED)
   update(
     @Param('id', new ParseIntPipe()) id: number,
@@ -77,6 +82,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   delete(@Param('id', new ParseIntPipe()) id: number) {
     return this.postsService.delete(id);
   }

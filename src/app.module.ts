@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostService } from './posts/posts.service';
 import { Posts } from './posts/posts.entity';
+import { CommentsModule } from './comments/comments.module';
 
 
 console.info(root);
@@ -26,6 +27,7 @@ console.info(root);
     }),
     UserModule,
     PostModule,
+    CommentsModule,
     LikesModule,
     AuthModule,
     TypeOrmModule.forFeature([Posts]),
